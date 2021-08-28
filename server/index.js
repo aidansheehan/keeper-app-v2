@@ -1,6 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
+const _ = require("lodash");
 
 const app = express();
 
@@ -107,6 +108,7 @@ app.route("/:noteTitle")
 });
 
 // Return HTTP Server Object
-app.listen(3000, function() {
-  console.log("Server started on port 3000");
+const port = 8000;
+app.listen(port, function() {
+  console.log("Server started on port " + port);
 })
