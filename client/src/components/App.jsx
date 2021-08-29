@@ -3,43 +3,43 @@ import Header from "./Header";
 import Footer from "./Footer";
 import Note from "./Note";
 import CreateArea from "./CreateArea";
-import notes from "../notes.js";
 import { getNotes, setNote } from "../services/note";
 
 function App() {
 
-  const [updatedNotes, setUpdatedNotes] = useState([]);
-  const [update, setUpdate] = useState(false);
+  const [notes, setNotes] = useState([]);       // notes for render on page
+  const [update, setUpdate] = useState(false);  // update var tells app to update notes list when changed
 
+//Change update Var Back to False to Escape Infinite Loop Behaviour
   useEffect(() => {
     if (update) {
       setUpdate(false);
     }
-  }, [update]);
+  }, [notes]);
 
+//Get Notes From API And Set Our Notes State On Render and After User Submits New Note,
   useEffect(() => {
     let mounted = true;
-    // if (notes.length && !update) {
-    //   return;
-    // }
+    if (notes.length && update === false ) {
+      return;
+    }
     getNotes().then(notes => {
       if (mounted) {
-        setUpdatedNotes(notes)
-      }
-    })
+        setNotes(notes)
+      }});
     return () => mounted = false;
-  }, [update, notes])
+  }, [update]);
 
-  // Function addItem() to Take New Note Object From CreateArea.jsx and Add to notes
+
+  // Function addItem() to Take New Note Object From CreateArea.jsx and POST to notes
   function addNote(newNote) {
     setNote(newNote);
     setUpdate(true);
-    // return setUpdatedNotes( (prevValue) => [...prevValue, newNote] );
   }
 
   // Function for Deleting a note
   function deleteNote(id) {
-    setUpdatedNotes( (prevNotes) => {
+    setNotes( (prevNotes) => {
       return prevNotes.filter( (note) => note.title !== id )
     })
   }
@@ -48,7 +48,7 @@ function App() {
       <div>
         <Header />
           <CreateArea onAdd={addNote} />
-          {updatedNotes.map(note => {
+          {notes.map(note => {
             return (<Note
               key={note.title}
               id={note.title}
