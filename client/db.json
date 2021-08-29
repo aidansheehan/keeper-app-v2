@@ -1,0 +1,7 @@
+{
+  "notes": [
+    {"key": 1, "title": "Test Note", "content": "I'm a test note from the DB"},
+    {"key": 2, "title": "Test Note 2", "content": "I'm another one!"},
+    {"key": 3, "title": "Test Note 3", "content": "I'm the last one"}
+  ]
+}
