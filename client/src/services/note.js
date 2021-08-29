@@ -14,9 +14,10 @@ export function setNote(note) {
   .then(data => data.json())
 }
 
-export function removeNote(note) {
-  return fetch("http://localhost:3333/notes", {
+export function removeNote(id) {
+  return fetch("http://localhost:3333/notes/" + id, {
     method: "DELETE",
-    body: JSON.stringify(note)
-  }).then(data => data.json())
+    // body: JSON.stringify(note)
+  })
+  // .then(data => data.json())
 }

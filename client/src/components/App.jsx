@@ -3,7 +3,7 @@ import Header from "./Header";
 import Footer from "./Footer";
 import Note from "./Note";
 import CreateArea from "./CreateArea";
-import { getNotes, setNote } from "../services/note";
+import { getNotes, setNote, removeNote } from "../services/note";
 
 function App() {
 
@@ -38,10 +38,14 @@ function App() {
   }
 
   // Function for Deleting a note
+  // function deleteNote(id) {
+  //   setNotes( (prevNotes) => {
+  //     return prevNotes.filter( (note) => note.title !== id )
+  //   })
+  // }
   function deleteNote(id) {
-    setNotes( (prevNotes) => {
-      return prevNotes.filter( (note) => note.title !== id )
-    })
+    removeNote(id);
+    setUpdate(true);
   }
 
     return(
@@ -51,9 +55,10 @@ function App() {
           {notes.map(note => {
             return (<Note
               key={note.title}
-              id={note.title}
+              id={note.id}
               title={note.title}
               content={note.content}
+              onDelete={deleteNote}
               />)
           })}
         <Footer />
