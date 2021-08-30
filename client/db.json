@@ -1,19 +1,14 @@
 {
   "notes": [
     {
-      "id": 1,
-      "title": "Test Note",
-      "content": "I'm a test note from the DB"
+      "title": "Test 1",
+      "content": "I'm a new note.",
+      "id": 1
     },
     {
-      "id": 3,
-      "title": "Test Note 3",
-      "content": "I'm the last one"
-    },
-    {
-      "title": "Test Postman",
-      "content": "I'm a test note from Postman",
-      "id": 4
+      "title": "Test 2",
+      "content": "Hi hasdajdskfjdskfhwejbf asnvbdhghefwleafw.,efh aekfnsajbf,adsbfs",
+      "id": 2
     }
   ]
 }

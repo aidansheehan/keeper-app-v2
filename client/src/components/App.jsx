@@ -31,18 +31,13 @@ function App() {
   }, [update]);
 
 
-  // Function addItem() to Take New Note Object From CreateArea.jsx and POST to notes
+  // Take New Note Object From CreateArea.jsx and POST to notes
   function addNote(newNote) {
     setNote(newNote);
     setUpdate(true);
   }
 
-  // Function for Deleting a note
-  // function deleteNote(id) {
-  //   setNotes( (prevNotes) => {
-  //     return prevNotes.filter( (note) => note.title !== id )
-  //   })
-  // }
+  // Take User Clicked Note and DELETE 
   function deleteNote(id) {
     removeNote(id);
     setUpdate(true);
