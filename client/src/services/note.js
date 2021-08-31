@@ -1,21 +1,28 @@
+const querystring = require("querystring");
+const uri = "http://localhost:8000";
+
+const userId = "aidan";         // Needs to be lifted from log in
+
 export function getNotes() {
-  return fetch("http://localhost:3333/notes")
-  .then(data => data.json())
+  return fetch(uri + "/" + userId ).then((response) => response.json())
+  // .then(data => data.json())
 }
 
 export function setNote(note) {
-  return fetch("http://localhost:3333/notes", {
-    method: "POST",
+  console.log(note)
+  return fetch(uri + "/" + userId, {
+    method: "PATCH",
     headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(note)
+       "Accept": 'application/json',
+       "Content-Type": "application/x-www-form-urlencoded"                 //'application/x-www-form-urlencoded'
+  },
+    body: querystring.stringify(note)                         //JSON.stringify() ??
   })
   .then(data => data.json())
 }
 
-export function removeNote(id) {
-  return fetch("http://localhost:3333/notes/" + id, {
+export function removeNote(noteId) {
+  return fetch(uri + "/" + userId + "/" + noteId, {
     method: "DELETE",
     // body: JSON.stringify(note)
   })

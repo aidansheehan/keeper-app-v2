@@ -20,9 +20,9 @@ function App() {
 //Get Notes From API And Set Our Notes State On Render and After User Submits New Note,
   useEffect(() => {
     let mounted = true;
-    if (notes.length && update === false ) {
-      return;
-    }
+    // if (notes.length && update === false ) {
+    //   return;
+    // }
     getNotes().then(notes => {
       if (mounted) {
         setNotes(notes)
@@ -37,7 +37,7 @@ function App() {
     setUpdate(true);
   }
 
-  // Take User Clicked Note and DELETE 
+  // Take User Clicked Note and DELETE
   function deleteNote(id) {
     removeNote(id);
     setUpdate(true);
@@ -46,16 +46,17 @@ function App() {
     return(
       <div>
         <Header />
-          <CreateArea onAdd={addNote} />
-          {notes.map(note => {
-            return (<Note
-              key={note.title}
-              id={note.id}
-              title={note.title}
-              content={note.content}
-              onDelete={deleteNote}
-              />)
-          })}
+        <CreateArea onAdd={addNote} />
+        {notes.map(note => {
+          return (<Note
+            key={note._id}
+            id={note._id}
+            title={note.title}
+            content={note.content}
+            onDelete={deleteNote}
+            />
+        );
+        })}
         <Footer />
       </div>
     );
