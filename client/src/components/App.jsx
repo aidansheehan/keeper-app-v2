@@ -10,8 +10,14 @@ function App() {
 
   const [notes, setNotes] = useState([]);       // notes for render on page
   const [update, setUpdate] = useState(false);  // update var tells app to update notes list when changed
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  //const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userId, setUserId] = useState("");
+
+  // Take username input and send to db to check
+  function checkUser(user) {
+    //console.log(user);
+    findUser(user).then((response) => {setUserId(response)})//.then(setIsLoggedIn(true));   //if statement
+  };
 
 //Change update Var Back to False to Escape Infinite Loop Behaviour
   useEffect(() => {
@@ -26,32 +32,29 @@ function App() {
     // if (notes.length && update === false ) {
     //   return;
     // }
-    getNotes().then(notes => {
+    if (userId.length) {
+    getNotes(userId).then(notes => {
       if (mounted) {
         setNotes(notes)
       }});
     return () => mounted = false;
-  }, [update]);
+  }}, [userId, update]);
 
 
   // Take New Note Object From CreateArea.jsx and POST to notes
   function addNote(newNote) {
-    setNote(newNote);
+    // console.log(userId);
+    setNote(userId, newNote);
     setUpdate(true);
   }
 
   // Take User Clicked Note and DELETE
   function deleteNote(id) {
-    removeNote(id);
+    removeNote(userId, id);
     setUpdate(true);
   }
 
-  // Take username input and send to db to check
-  function checkUser(user) {
-    findUser(user).then((userIdNumber) => setUserId(userIdNumber)).then(setIsLoggedIn(true));
-  };
-
-  if (!isLoggedIn) {
+  if (!userId.length) {
     return(
       <div>
         <Header />

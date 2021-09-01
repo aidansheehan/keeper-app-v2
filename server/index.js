@@ -38,8 +38,12 @@ const List = mongoose.model("List", listsSchema);
 
 // Login Route
 app.post("/login", function(req, res) {
+  //console.log(req.body.username)
   List.findOne({userId: req.body.username}, function(err, foundList) {
-    if (foundList) res.send(foundList._id)
+    if (foundList) {
+      console.log(foundList);
+      return res.send(foundList._id)
+     }
     else if (!foundList) res.send("No user found")          // need to handle in app
     else res.send(err)
   })
@@ -49,8 +53,8 @@ app.post("/login", function(req, res) {
 // Define RESTful API For User Route
 app.route("/notes/:userId")
 .get(function(req, res) {
-  //console.log("GET request " + new Date());             //Log GET requests to make sure no memory leak
-  List.findOne({userId: req.params.userId}, function(err, foundList) {
+  console.log("GET request " + new Date());             //Log GET requests to make sure no memory leak
+  List.findOne({_id: req.params.userId}, function(err, foundList) {
     if (!err) {
       res.send(foundList.notes);
     } else {
@@ -59,14 +63,14 @@ app.route("/notes/:userId")
   });
 })
 .patch(function(req, res) {
-  List.updateOne({userId: req.params.userId}, {$push: {notes: req.body}}, function(err) {
+  List.updateOne({_id: req.params.userId}, {$push: {notes: req.body}}, function(err) {
     if (!err) res.send("Successfully updated note");
     else res.send(err);
   })
 });         // update so userId is unique mongoose generated id
 
 app.delete("/notes/:userId/:noteId", function(req, res) {
-  List.updateOne({userId: req.params.userId}, {$pull: {notes: {"_id": req.params.noteId}}}, function(err) {
+  List.updateOne({_id: req.params.userId}, {$pull: {notes: {"_id": req.params.noteId}}}, function(err) {
     if (!err) res.send("Successfully deleted note");
     else res.send(err);
   } )
