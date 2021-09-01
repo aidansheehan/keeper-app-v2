@@ -19,50 +19,51 @@ mongoose.connect("mongodb://localhost:27017/notesDB", {useNewUrlParser: true, us
 //   console.log("we're connected!");
 // });
 
-// Define Notes Schema
-// const notesSchema = new mongoose.Schema({
-//   title: String,
-//   content: String
-// });
+// Define Model for User Login Info
+const userSchema = new mongoose.Schema({
+  email: String,
+  password: String
+});
+const User = new mongoose.model("User", userSchema);
 
-// Define Users Model
-const usersSchema = new mongoose.Schema({
+// Define Model for Notes Lists
+const listsSchema = new mongoose.Schema({
   userId: String,
   notes: [{
     title: String,
     content: String
   }]
 });
+const List = mongoose.model("List", listsSchema);
 
-const User = mongoose.model("User", usersSchema);
 
-// Compile Schema Into Model
-// const Note = mongoose.model("Note", notesSchema);
 // Define RESTful API For User Route
 app.route("/:userId")
 .get(function(req, res) {
-  console.log("GET request " + new Date());             //Log GET requests to make sure no memory leak
-  User.findOne({userId: req.params.userId}, function(err, foundUser) {
+  //console.log("GET request " + new Date());             //Log GET requests to make sure no memory leak
+  List.findOne({userId: req.params.userId}, function(err, foundList) {
     if (!err) {
-      res.send(foundUser.notes);
+      res.send(foundList.notes);
     } else {
       res.send(err)
     }
   });
 })
 .patch(function(req, res) {
-  User.update({userId: req.params.userId}, {$push: {notes: req.body}}, function(err) {
+  List.updateOne({userId: req.params.userId}, {$push: {notes: req.body}}, function(err) {
     if (!err) res.send("Successfully updated note");
     else res.send(err);
   })
 });         // update so userId is unique mongoose generated id
 
 app.delete("/:userId/:noteId", function(req, res) {
-  User.update({userId: req.params.userId}, {$pull: {notes: {"_id": req.params.noteId}}}, function(err) {
+  List.updateOne({userId: req.params.userId}, {$pull: {notes: {"_id": req.params.noteId}}}, function(err) {
     if (!err) res.send("Successfully deleted note");
     else res.send(err);
   } )
 })
+
+// Change User to List
 
 
 

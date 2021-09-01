@@ -9,7 +9,6 @@ export function getNotes() {
 }
 
 export function setNote(note) {
-  console.log(note)
   return fetch(uri + "/" + userId, {
     method: "PATCH",
     headers: {
