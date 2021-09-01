@@ -20,11 +20,11 @@ mongoose.connect("mongodb://localhost:27017/notesDB", {useNewUrlParser: true, us
 // });
 
 // Define Model for User Login Info
-const userSchema = new mongoose.Schema({
-  email: String,
-  password: String
-});
-const User = new mongoose.model("User", userSchema);
+// const userSchema = new mongoose.Schema({
+//   email: String,
+//   password: String
+// });
+// const User = new mongoose.model("User", userSchema);
 
 // Define Model for Notes Lists
 const listsSchema = new mongoose.Schema({
@@ -36,9 +36,18 @@ const listsSchema = new mongoose.Schema({
 });
 const List = mongoose.model("List", listsSchema);
 
+// Login Route
+app.post("/login", function(req, res) {
+  List.findOne({userId: req.body.username}, function(err, foundList) {
+    if (foundList) res.send(foundList._id)
+    else if (!foundList) res.send("No user found")          // need to handle in app
+    else res.send(err)
+  })
+})
+
 
 // Define RESTful API For User Route
-app.route("/:userId")
+app.route("/notes/:userId")
 .get(function(req, res) {
   //console.log("GET request " + new Date());             //Log GET requests to make sure no memory leak
   List.findOne({userId: req.params.userId}, function(err, foundList) {
@@ -56,7 +65,7 @@ app.route("/:userId")
   })
 });         // update so userId is unique mongoose generated id
 
-app.delete("/:userId/:noteId", function(req, res) {
+app.delete("/notes/:userId/:noteId", function(req, res) {
   List.updateOne({userId: req.params.userId}, {$pull: {notes: {"_id": req.params.noteId}}}, function(err) {
     if (!err) res.send("Successfully deleted note");
     else res.send(err);

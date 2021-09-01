@@ -3,12 +3,15 @@ import Header from "./Header";
 import Footer from "./Footer";
 import Note from "./Note";
 import CreateArea from "./CreateArea";
-import { getNotes, setNote, removeNote } from "../services/note";
+import LogIn from "./LogIn";
+import { getNotes, setNote, removeNote, findUser } from "../services/note";
 
 function App() {
 
   const [notes, setNotes] = useState([]);       // notes for render on page
   const [update, setUpdate] = useState(false);  // update var tells app to update notes list when changed
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userId, setUserId] = useState("");
 
 //Change update Var Back to False to Escape Infinite Loop Behaviour
   useEffect(() => {
@@ -43,6 +46,20 @@ function App() {
     setUpdate(true);
   }
 
+  // Take username input and send to db to check
+  function checkUser(user) {
+    findUser(user).then((userIdNumber) => setUserId(userIdNumber)).then(setIsLoggedIn(true));
+  };
+
+  if (!isLoggedIn) {
+    return(
+      <div>
+        <Header />
+        <LogIn onClick={checkUser} />
+        <Footer />
+      </div>
+    )
+  } else {
     return(
       <div>
         <Header />
@@ -59,7 +76,7 @@ function App() {
         })}
         <Footer />
       </div>
-    );
+    )};
 }
 
 export default App;
