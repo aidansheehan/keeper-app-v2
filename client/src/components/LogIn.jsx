@@ -1,11 +1,17 @@
 import React, {useState} from "react";
 
 function LogIn(props) {
-  const [user, setUser] = useState({username: ""});
+  const [user, setUser] = useState({username: "", password:""});
 
   function handleChange(event) {
-    const {value} = event.target;
-    setUser({username: value});
+    const {value, name} = event.target;
+    console.log(name);
+    setUser(prevUser => {
+      return {
+        ...prevUser,
+        [name]: value
+      }
+    });
   }
 
   function handleClick(event) {
@@ -14,8 +20,15 @@ function LogIn(props) {
   }
   return (
     <div>
-      <form>
-        <input onChange={handleChange} />
+      <form className="login"  >
+        <label>
+          Username:
+          <input onChange={handleChange} name="username"/>
+        </label>
+        <label>
+          Password:
+          <input onChange={handleChange} name="password" type="password"/>
+        </label>
         <button type="submit" onClick={handleClick} >Log In</button> {/* Remember to preventDefault*/}
       </form>
     </div>

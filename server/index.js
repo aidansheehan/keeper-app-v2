@@ -5,6 +5,14 @@ const _ = require("lodash");
 const cors = require("cors");
 const app = express();
 
+//NOTE:
+  // To Do:
+  //   - Ask user to sign in again or register if user not found in DB
+  //   - Add route to deal with new user register -> create empty notes object with their name in DB
+  //   - Test as many weird cases as you can, try to break your code and defensively program to ensure it can deal
+  //   - Add password, salt and hash -> better level of (internal) encryption, think about when and how to do this to ensure
+  //     safety when passing props around etc.
+
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
 app.use(cors());
@@ -28,7 +36,10 @@ mongoose.connect("mongodb://localhost:27017/notesDB", {useNewUrlParser: true, us
 
 // Define Model for Notes Lists
 const listsSchema = new mongoose.Schema({
-  userId: String,
+  userId: {
+    username: String,
+    password: String
+  },
   notes: [{
     title: String,
     content: String
@@ -38,8 +49,9 @@ const List = mongoose.model("List", listsSchema);
 
 // Login Route
 app.post("/login", function(req, res) {
+  console.log(req.body);
   //console.log(req.body.username)
-  List.findOne({userId: req.body.username}, function(err, foundList) {
+  List.findOne({userId: req.body}, function(err, foundList) {
     if (foundList) {
       console.log(foundList);
       return res.send(foundList._id)
