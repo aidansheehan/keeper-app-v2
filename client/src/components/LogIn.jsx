@@ -17,6 +17,7 @@ function LogIn(props) {
   function handleLoginClick(event) {
     event.preventDefault();
     props.onLoginClick(user);
+    setUser({username: "", password: ""});
   }
 
   function handleRegisterChange(event) {
@@ -33,8 +34,12 @@ function LogIn(props) {
     event.preventDefault();
     if (newUser.password1 === newUser.password2) {
       props.onRegisterClick({username: newUser.username, password: newUser.password1});
+      setNewUser({username: "", password1: "", password2: ""});
     } else {
-      console.log("Passwords don't match");
+      alert("The passwords you provided do not match. Please enter them again.");
+      setNewUser((prevNewUser) => {
+        return {username: prevNewUser.username, password1: "", password2: ""}
+      });
     }
   };
 
@@ -47,28 +52,51 @@ function LogIn(props) {
         <h2>Log In</h2>
         <label>
           Username:
-          <input onChange={handleLoginChange} name="username"/>
+          <input
+            onChange={handleLoginChange}
+            name="username"
+            value={user.username}
+          />
         </label>
         <label>
           Password:
-          <input onChange={handleLoginChange} name="password" type="password"/>
+          <input
+            onChange={handleLoginChange}
+            name="password"
+            type="password"
+            value={user.password}
+          />
         </label>
-        <button type="submit" onClick={handleLoginClick} >Log In</button> {/* Remember to preventDefault*/}
+        <button type="submit" onClick={handleLoginClick} >Log In</button>
       </form>
 
       <form className="register">
         <h2>Register</h2>
         <label>
           Username:
-          <input onChange={handleRegisterChange} name="username" />
+          <input
+            onChange={handleRegisterChange}
+            name="username"
+            value={newUser.username}
+          />
         </label>
         <label>
           Password:
-          <input onChange={handleRegisterChange} name="password1" type="password" />
+          <input
+            onChange={handleRegisterChange}
+            name="password1"
+            type="password"
+            value={newUser.password1}
+          />
         </label>
         <label>
           Enter your password again:
-          <input onChange={handleRegisterChange} name="password2" type="password" />
+          <input
+            onChange={handleRegisterChange}
+            name="password2"
+            type="password"
+            value={newUser.password2}
+          />
         </label>
         <button type="submit" onClick={handleRegisterClick} >Register</button>
       </form>
