@@ -6,7 +6,6 @@ function Note(props) {
         <h1>{props.title}</h1>
         <p>{props.content}</p>
         <button onClick={ () => {
-            // props.onDelete(props.title);
             props.onDelete(props.id)
           } } >
           <DeleteIcon/>

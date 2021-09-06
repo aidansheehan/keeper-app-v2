@@ -13,12 +13,28 @@ export function findUser(user) {
       "Content-Type": "application/x-www-form-urlencoded"
     },
     body: querystring.stringify(user)
-  }).then(response => response.json())//.then(data => userId = data)
+  }).then(response => {
+    if (response.status === 401) {
+      return response.status;
+    } else {
+      return response.json();
+    }
+});
 }
 
+export function createUser(user) {
+  return fetch(uri + "/register", {
+    method: "POST",
+    headers: {
+      "Accept": "application/json",
+      "Content-Type": "application/x-www-form-urlencoded"
+    },
+    body: querystring.stringify(user)
+  }).then(response => response.status)
+  }
+
 export function getNotes(userId) {
-  return fetch(uri + "/notes/" + userId ).then((response) => response.json())
-  // .then(data => data.json())
+  return fetch(uri + "/notes/" + userId ).then((response) => response.json());
 }
 
 export function setNote(userId, note) {
@@ -26,17 +42,15 @@ export function setNote(userId, note) {
     method: "PATCH",
     headers: {
        "Accept": 'application/json',
-       "Content-Type": "application/x-www-form-urlencoded"                 //'application/x-www-form-urlencoded'
+       "Content-Type": "application/x-www-form-urlencoded"
   },
-    body: querystring.stringify(note)                         //JSON.stringify() ??
+    body: querystring.stringify(note)
   })
-  .then(data => data.json())
+  .then(data => data.text());
 }
 
 export function removeNote(userId, noteId) {
   return fetch(uri + "/notes/" + userId + "/" + noteId, {
-    method: "DELETE",
-    // body: JSON.stringify(note)
-  })
-  // .then(data => data.json())
-}
+    method: "DELETE"
+  });
+};

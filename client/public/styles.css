@@ -102,7 +102,7 @@ form.create-note button {
   outline: none;
 }
 
-form.login {
+form.login, form.register {
   position: relative;
   width: 480px;
   margin: 30px auto 20px auto;
@@ -112,7 +112,7 @@ form.login {
   box-shadow: 0 1px 5px rgb(138,137,137);
 }
 
-form.login input {
+form.login input, form.register input {
   width: 100%;
   /*border: none;*/
   padding: 4px;
@@ -122,7 +122,7 @@ form.login input {
   resize: none;
 }
 
-form.login button {
+form.login button, form.register button {
   /*position: absolute;
   right: 18px;
   bottom: -18px;*/

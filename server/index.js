@@ -6,9 +6,6 @@ const cors = require("cors");
 const app = express();
 
 //NOTE:
-  // To Do:
-  //   - Ask user to sign in again or register if user not found in DB
-  //   - Add route to deal with new user register -> create empty notes object with their name in DB
   //   - Test as many weird cases as you can, try to break your code and defensively program to ensure it can deal
   //   - Add password, salt and hash -> better level of (internal) encryption, think about when and how to do this to ensure
   //     safety when passing props around etc.
@@ -27,13 +24,6 @@ mongoose.connect("mongodb://localhost:27017/notesDB", {useNewUrlParser: true, us
 //   console.log("we're connected!");
 // });
 
-// Define Model for User Login Info
-// const userSchema = new mongoose.Schema({
-//   email: String,
-//   password: String
-// });
-// const User = new mongoose.model("User", userSchema);
-
 // Define Model for Notes Lists
 const listsSchema = new mongoose.Schema({
   userId: {
@@ -49,18 +39,36 @@ const List = mongoose.model("List", listsSchema);
 
 // Login Route
 app.post("/login", function(req, res) {
-  console.log(req.body);
-  //console.log(req.body.username)
   List.findOne({userId: req.body}, function(err, foundList) {
     if (foundList) {
-      console.log(foundList);
       return res.send(foundList._id)
      }
-    else if (!foundList) res.send("No user found")          // need to handle in app
+    else if (!foundList) res.sendStatus(401);          // need to handle in app (should it be 401?)
     else res.send(err)
   })
+  console.log("Login request completed");
 })
 
+//Register Route
+app.post("/register", function(req, res) {
+  const newUser = req.body;
+  List.findOne({"userId.username": req.body.username}, function(err, foundList) {
+    if (!foundList) {
+      List.create(
+        {
+          userId: {username: newUser.username, password: newUser.password},
+          notes: []
+        }
+      );
+      return res.sendStatus(200);
+    } else if (foundList) {
+      res.sendStatus(409);
+    } else {
+      res.send(err);
+    }
+  });
+  console.log("Register request completed.");
+});
 
 // Define RESTful API For User Route
 app.route("/notes/:userId")
@@ -79,7 +87,7 @@ app.route("/notes/:userId")
     if (!err) res.send("Successfully updated note");
     else res.send(err);
   })
-});         // update so userId is unique mongoose generated id
+});
 
 app.delete("/notes/:userId/:noteId", function(req, res) {
   List.updateOne({_id: req.params.userId}, {$pull: {notes: {"_id": req.params.noteId}}}, function(err) {
@@ -87,8 +95,6 @@ app.delete("/notes/:userId/:noteId", function(req, res) {
     else res.send(err);
   } )
 })
-
-// Change User to List
 
 
 

@@ -7,7 +7,7 @@ function CreateArea(props) {
 
   const [isExpanded, setIsExpanded] = useState(false);
 
-  // Create Complex State to Track New Note Input
+  // Create State to Track New Note Input
   const [newNote, setNewNote] = useState({title: "", content: ""});
 
   // Function to Handle Change in New Note Input

@@ -4,19 +4,37 @@ import Footer from "./Footer";
 import Note from "./Note";
 import CreateArea from "./CreateArea";
 import LogIn from "./LogIn";
-import { getNotes, setNote, removeNote, findUser } from "../services/note";
+import { getNotes, setNote, removeNote, findUser, createUser } from "../services/note";
 
 function App() {
 
   const [notes, setNotes] = useState([]);       // notes for render on page
   const [update, setUpdate] = useState(false);  // update var tells app to update notes list when changed
-  //const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userId, setUserId] = useState("");
 
   // Take username input and send to db to check
   function checkUser(user) {
-    //console.log(user);
-    findUser(user).then((response) => {setUserId(response)})//.then(setIsLoggedIn(true));   //if statement
+    findUser(user).then((response) => {
+      if (response === 401) {
+        alert("This username and password combination doesn't exist. Please try again, or register a new account.");
+        return;
+      } else {
+        setUserId(response);
+      }
+  });
+  };
+
+// Create new user in DB
+  function newUser(user) {
+    createUser(user).then(response => {
+      if (response === 409) {
+        alert("This username is already registered. Please log in or register with a different username.")
+      } else if (response === 200) {
+        checkUser(user);
+      } else {
+        console.log(response);
+      }
+    });
   };
 
 //Change update Var Back to False to Escape Infinite Loop Behaviour
@@ -29,21 +47,17 @@ function App() {
 //Get Notes From API And Set Our Notes State On Render and After User Submits New Note,
   useEffect(() => {
     let mounted = true;
-    // if (notes.length && update === false ) {
-    //   return;
-    // }
     if (userId.length) {
     getNotes(userId).then(notes => {
       if (mounted) {
         setNotes(notes)
       }});
     return () => mounted = false;
-  }}, [userId, update]);
+  }}, [userId, update]);      //remove update
 
 
   // Take New Note Object From CreateArea.jsx and POST to notes
   function addNote(newNote) {
-    // console.log(userId);
     setNote(userId, newNote);
     setUpdate(true);
   }
@@ -58,7 +72,7 @@ function App() {
     return(
       <div>
         <Header />
-        <LogIn onClick={checkUser} />
+        <LogIn onLoginClick={checkUser} onRegisterClick={newUser} />
         <Footer />
       </div>
     )
