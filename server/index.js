@@ -3,7 +3,10 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const _ = require("lodash");
 const cors = require("cors");
+const bcrypt = require("bcrypt");
+const saltRounds = 10;
 const app = express();
+
 
 //NOTE:
   //   - Test as many weird cases as you can, try to break your code and defensively program to ensure it can deal
@@ -39,35 +42,41 @@ const List = mongoose.model("List", listsSchema);
 
 // Login Route
 app.post("/login", function(req, res) {
-  List.findOne({userId: req.body}, function(err, foundList) {
+  List.findOne({"userId.username": req.body.username}, function(err, foundList) {
     if (foundList) {
-      return res.send(foundList._id)
+      bcrypt.compare(req.body.password, foundList.userId.password, function(err, result) {
+        if (result === true) {
+          res.send(foundList._id)
+        } else {
+          res.sendStatus(401);
+        }
+      });
+      // return res.send(foundList._id)
      }
-    else if (!foundList) res.sendStatus(401);          // need to handle in app (should it be 401?)
+    else if (!foundList) res.sendStatus(401);
     else res.send(err)
-  })
-  console.log("Login request completed");
-})
+  });
+});
 
 //Register Route
 app.post("/register", function(req, res) {
-  const newUser = req.body;
   List.findOne({"userId.username": req.body.username}, function(err, foundList) {
     if (!foundList) {
-      List.create(
-        {
-          userId: {username: newUser.username, password: newUser.password},
-          notes: []
-        }
-      );
-      return res.sendStatus(200);
+      bcrypt.hash(req.body.password, saltRounds, function(err, hash) {
+        List.create(
+          {
+            userId: {username: req.body.username, password: hash},
+            notes: []
+          }
+        );
+        return res.sendStatus(200);
+      });
     } else if (foundList) {
       res.sendStatus(409);
     } else {
       res.send(err);
     }
   });
-  console.log("Register request completed.");
 });
 
 // Define RESTful API For User Route
