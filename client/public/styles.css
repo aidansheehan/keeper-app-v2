@@ -7,22 +7,36 @@ html {
   font-family: "Montserrat", sans-serif;
 }
 body {
-  background: #eee;
+  background: #F0E5CF;
   background-image: url("https://www.transparenttextures.com/patterns/cubes.png");
+  /*color: #4B6587;*/
   padding: 0 16px;
 }
 
 header {
-  background-color: #f5ba13;
+  background-color: #4B6587;
   margin: auto -16px;
   padding: 16px 32px;
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.3);
 }
 
 header h1 {
-  color: #fff;
+  color: #F7F6F2;
+  display: inline-block;
   font-family: "McLaren", cursive;
   font-weight: 200;
+  width: 50%;
+}
+
+header h2 {
+  color: #F7F6F2;
+  display: inline-block;
+  text-align: right;
+  width: 50%;
+}
+
+header a {
+  color: #F7F6F2;
 }
 
 footer {
@@ -34,10 +48,10 @@ footer {
 }
 
 footer p {
-  color: #ccc;
+  color: #C8C6C6;
 }
 .note {
-  background: #fff;
+  background: #F7F6F2;
   border-radius: 7px;
   box-shadow: 0 2px 5px #ccc;
   padding: 10px;
@@ -60,7 +74,7 @@ footer p {
   position: relative;
   float: right;
   margin-right: 10px;
-  color: #f5ba13;
+  color: #4B6587;
   border: none;
   width: 36px;
   height: 36px;
@@ -72,13 +86,14 @@ form.create-note {
   position: relative;
   width: 480px;
   margin: 30px auto 20px auto;
-  background: #fff;
+  background: #F7F6F2;
   padding: 15px;
   border-radius: 7px;
   box-shadow: 0 1px 5px rgb(138, 137, 137);
 }
 form.create-note input,
 form.create-note textarea {
+  background: #F7F6F2;
   width: 100%;
   border: none;
   padding: 4px;
@@ -91,8 +106,8 @@ form.create-note button {
   position: absolute;
   right: 18px;
   bottom: -18px;
-  background: #f5ba13;
-  color: #fff;
+  background: #4B6587;
+  color: #F7F6F2;
   border: none;
   border-radius: 50%;
   width: 36px;
@@ -106,32 +121,70 @@ form.login, form.register {
   position: relative;
   width: 480px;
   margin: 30px auto 20px auto;
-  background: #fff;
+  background: #F7F6F2;
   padding: 15px;
   border-radius: 7px;
   box-shadow: 0 1px 5px rgb(138,137,137);
 }
 
 form.login input, form.register input {
+  background: #F7F6F2;
+  border-style: solid;
+  border-radius: 7px;
   width: 100%;
-  /*border: none;*/
   padding: 4px;
   outline: none;
   font-size: 1.2em;
-  font-family: inherit;
+  font-family: Montserrat, sans-serif;
   resize: none;
+  margin-bottom: 8px;
+}
+
+form.login p, form.register p {
+  margin-bottom: 8px;
 }
 
 form.login button, form.register button {
-  /*position: absolute;
-  right: 18px;
-  bottom: -18px;*/
-  background: #f5ba13;
-  color: #fff;
-  /*border-radius: 50%;*/
-  width: 50px;
+  background: #4B6587;
+  border: none;
+  border-radius: 7px;
+  color: #F7F6F2;
+  font-family: "McLaren", cursive;
   height: 36px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
   cursor: pointer;
   outline: none;
+  padding: 0 5px 0 5px;
+}
+
+form.login button:hover, form.register button:hover {
+  background: #F7F6F2;
+  border: solid #4B6587;
+  color: #4B6587;
+}
+
+.login-register-toggle:hover {
+  color: #4B6587;
+  cursor: pointer;
+}
+
+/* For Mobile Phones */
+@media only screen and (max-width: 600px) {
+  header h1, header h2 {
+    text-align: center;
+    width: 100%;
+  }
+  .note {
+    float: none;
+    margin: 16px auto 16px auto;
+    padding-bottom: 50px;
+    width: 75%;
+    /* display: inline-block !important;
+    position: relative !important;
+    /* left: 12.5%; */
+    /* margin: 16px auto 16px auto !important;
+    width: 75%; */
+  }
+  .create-note {
+    width: 75% !important;
+  }
 }

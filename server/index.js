@@ -75,7 +75,6 @@ app.post("/register", function(req, res) {
 // User Routes
 app.route("/notes/:userId")
 .get(function(req, res) {
-  console.log("GET request " + new Date());             //Log GET requests to make sure no memory leak
   List.findOne({_id: req.params.userId}, function(err, foundList) {
     if (!err) {
       res.send(foundList.notes);

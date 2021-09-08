@@ -3,6 +3,7 @@ import React, {useState} from "react";
 function LogIn(props) {
   const [user, setUser] = useState({username: "", password:""});
   const [newUser, setNewUser] = useState({username: "", password1: "", password2: ""});
+  const [registered, setRegistered] = useState(false);
 
   function handleLoginChange(event) {
     const {value, name} = event.target;
@@ -43,13 +44,16 @@ function LogIn(props) {
     }
   };
 
+  function toggleRegistered() {
+    setRegistered((prev) => !prev);
+  }
 
 
-  return (
-    <div>
-
+  if (registered) {
+    return (
       <form className="login"  >
         <h2>Log In</h2>
+        <p>Don't have an account? <span className="login-register-toggle" onClick={toggleRegistered}>Click here to create one.</span></p>
         <label>
           Username:
           <input
@@ -69,11 +73,14 @@ function LogIn(props) {
         </label>
         <button type="submit" onClick={handleLoginClick} >Log In</button>
       </form>
-
+    )
+  } else {
+    return (
       <form className="register">
-        <h2>Register</h2>
+        <h2>Create an Account</h2>
+        <p>Already have an account? <span className="login-register-toggle" onClick={toggleRegistered} >Click here to sign in.</span></p>
         <label>
-          Username:
+          Your Username:
           <input
             onChange={handleRegisterChange}
             name="username"
@@ -81,7 +88,7 @@ function LogIn(props) {
           />
         </label>
         <label>
-          Password:
+          Your Password:
           <input
             onChange={handleRegisterChange}
             name="password1"
@@ -100,9 +107,66 @@ function LogIn(props) {
         </label>
         <button type="submit" onClick={handleRegisterClick} >Register</button>
       </form>
-
-    </div>
-  )
+    )
+  }
+  // return (
+  //   <div>
+  //
+  //     <form className="login"  >
+  //       <h2>Log In</h2>
+  //       <label>
+  //         Username:
+  //         <input
+  //           onChange={handleLoginChange}
+  //           name="username"
+  //           value={user.username}
+  //         />
+  //       </label>
+  //       <label>
+  //         Password:
+  //         <input
+  //           onChange={handleLoginChange}
+  //           name="password"
+  //           type="password"
+  //           value={user.password}
+  //         />
+  //       </label>
+  //       <button type="submit" onClick={handleLoginClick} >Log In</button>
+  //     </form>
+  //
+      // <form className="register">
+      //   <h2>Register</h2>
+      //   <label>
+      //     Username:
+      //     <input
+      //       onChange={handleRegisterChange}
+      //       name="username"
+      //       value={newUser.username}
+      //     />
+      //   </label>
+      //   <label>
+      //     Password:
+      //     <input
+      //       onChange={handleRegisterChange}
+      //       name="password1"
+      //       type="password"
+      //       value={newUser.password1}
+      //     />
+      //   </label>
+      //   <label>
+      //     Enter your password again:
+      //     <input
+      //       onChange={handleRegisterChange}
+      //       name="password2"
+      //       type="password"
+      //       value={newUser.password2}
+      //     />
+      //   </label>
+      //   <button type="submit" onClick={handleRegisterClick} >Register</button>
+      // </form>
+  //
+  //   </div>
+  // )
 }
 
 export default LogIn;
