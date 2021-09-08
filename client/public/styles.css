@@ -167,6 +167,11 @@ form.login button:hover, form.register button:hover {
   cursor: pointer;
 }
 
+footer {
+  position: fixed;
+  bottom: 0;
+}
+
 /* For Mobile Phones */
 @media only screen and (max-width: 600px) {
   header h1, header h2 {
@@ -186,5 +191,8 @@ form.login button:hover, form.register button:hover {
   }
   .create-note {
     width: 75% !important;
+  }
+  form.login, form.register {
+    width: 75%;
   }
 }
