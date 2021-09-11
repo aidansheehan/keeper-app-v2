@@ -16,3 +16,6 @@ Contributions welcome.
 This project is hosted here: https://note-keeper-client.herokuapp.com/
 
 (The server is deployed as a seperate heroku app)
+
+## Contact Me
+Send me an email at aidanmsheehan@gmail.com.
